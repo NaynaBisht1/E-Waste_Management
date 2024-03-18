@@ -1,0 +1,532 @@
+<?php
+    session_start();
+?>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Order</title>
+    <link rel="stylesheet" href="style.css">
+         
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        .table {
+            flex: 1;
+            margin: 40px;
+            position: relative;
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
+        button.cart {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .button-container {
+                justify-content: center;
+            }
+        }
+
+        iframe.footer {
+            width: 100%;
+            height: 180px; /* Adjust the height of the iframe as needed */
+            border: none; /* Remove the border to avoid extra space */
+        }
+        h2 {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 28px;
+        }
+
+        .box {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 320px;
+            padding: 20px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            overflow: auto;
+            border-radius: 10px;
+            font-size: 18px;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1;
+        }
+
+        .table2 {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table2 th, td {
+            padding: 5px 10px;
+            text-align: left;
+        }
+
+        
+        .button-container2 {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+
+        .button-container2 button {
+            display: flex;
+            align-items:center;
+            margin: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            background-color: #1B5E20;
+            border-radius: 0.75rem;
+            color: #ffffff;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            width: 10rem;
+            font-size: 14px;
+        }
+
+        .button-container2 button:hover {
+            transform: scale(1.05);
+        }
+        .button-icon {
+            margin-right: 0.5rem;
+            max-width: 24px;
+            max-height: 24px;
+        }
+
+        .show {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .button-container2 {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .button-container2 button {
+                width: 80%;
+                margin-top: 1rem;
+            }
+        }
+
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 2;
+        }
+
+        .box {
+            /* Your existing box styles */
+            z-index: 3; /* Ensure the box is displayed above the overlay */
+        }
+
+    </style>
+
+</head>
+
+<body>
+        <iframe src="header.html" title="Header" width="100%" height="80"></iframe>
+        
+        <div>
+            <div class="button-container2">
+                <button onclick="toggleTable()">
+                    <span style="flex: 1; text-align: center;">General Scrap Rate</span>
+                </button>
+            </div>
+
+            </div>
+        </div>
+
+        <main class="table" >
+            <section class="table-header">
+                <h1>Select Items To Dispose</h1>
+                <div class="input-group">
+                    <input type="search" placeholder="Search Items">
+                </div>
+            </section>
+        
+            <section class="table-body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>List of waste material</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Laptop</td>
+                            <td><strong>&#8377 40</strong></td>
+
+                            <td>
+                                <div>
+                                    <div>
+                                        <button onclick="decrementValue(this)" style="width: 25px;">-</button>
+                                        <input type="number" value="0" min="0" style="width: 40px;">
+                                        <button onclick="incrementValue(this)" style="width: 25px;">+</button>
+                                    </div>
+                                        <script>
+                                            function incrementValue(input) {
+                                                var value = parseInt(input.previousElementSibling.value, 10);
+                                                input.previousElementSibling.value = isNaN(value) ? 1 : value + 1;
+                                            }
+                                        
+                                            function decrementValue(input) {
+                                                var value = parseInt(input.nextElementSibling.value, 10);
+                                                if (value > 0) {
+                                                    input.nextElementSibling.value = value - 1;
+                                                }
+                                            }
+                                        </script>
+                                    </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td>Mouse</td>
+                            <td><strong>&#8377 5</strong></td>
+                            
+                            <td>
+                                <div>
+                                    <div>
+                                        <button onclick="decrementValue(this)" style="width: 25px;">-</button>
+                                        <input type="number" value="0" min="0" style="width: 40px;">
+                                        <button onclick="incrementValue(this)" style="width: 25px;">+</button>
+                                    </div>
+                                        <script>
+                                            function incrementValue(input) {
+                                                var value = parseInt(input.previousElementSibling.value, 10);
+                                                input.previousElementSibling.value = isNaN(value) ? 1 : value + 1;
+                                            }
+                                        
+                                            function decrementValue(input) {
+                                                var value = parseInt(input.nextElementSibling.value, 10);
+                                                if (value > 0) {
+                                                    input.nextElementSibling.value = value - 1;
+                                                }
+                                            }
+                                        </script>
+                                    </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td>Charger</td>
+                            <td><strong>&#8377 5</strong></td>
+                            
+                            <td>
+                                <div>
+                                    <div>
+                                        <button onclick="decrementValue(this)" style="width: 25px;">-</button>
+                                        <input type="number" value="0" min="0" style="width: 40px;">
+                                        <button onclick="incrementValue(this)" style="width: 25px;">+</button>
+                                    </div>
+                                        <script>
+                                            function incrementValue(input) {
+                                                var value = parseInt(input.previousElementSibling.value, 10);
+                                                input.previousElementSibling.value = isNaN(value) ? 1 : value + 1;
+                                            }
+                                        
+                                            function decrementValue(input) {
+                                                var value = parseInt(input.nextElementSibling.value, 10);
+                                                if (value > 0) {
+                                                    input.nextElementSibling.value = value - 1;
+                                                }
+                                            }
+                                        </script>
+                                    </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td>Routers</td>
+                            <td><strong>&#8377 10</strong></td>
+                            
+                            <td>
+                                <div>
+                                    <div>
+                                        <button onclick="decrementValue(this)" style="width: 25px;">-</button>
+                                        <input type="number" value="0" min="0" style="width: 40px;">
+                                        <button onclick="incrementValue(this)" style="width: 25px;">+</button>
+                                    </div>
+                                        <script>
+                                            function incrementValue(input) {
+                                                var value = parseInt(input.previousElementSibling.value, 10);
+                                                input.previousElementSibling.value = isNaN(value) ? 1 : value + 1;
+                                            }
+                                        
+                                            function decrementValue(input) {
+                                                var value = parseInt(input.nextElementSibling.value, 10);
+                                                if (value > 0) {
+                                                    input.nextElementSibling.value = value - 1;
+                                                }
+                                            }
+                                        </script>
+                                    </div>
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+                            <td>Phone</td>
+                            <td><strong>&#8377 30</strong></td>
+                            
+                            <td>
+                                <div>
+                                    <div>
+                                        <button onclick="decrementValue(this)" style="width: 25px;">-</button>
+                                        <input type="number" value="0" min="0" style="width: 40px;">
+                                        <button onclick="incrementValue(this)" style="width: 25px;">+</button>
+                                    </div>
+                                        <script>
+                                            function incrementValue(input) {
+                                                var value = parseInt(input.previousElementSibling.value, 10);
+                                                input.previousElementSibling.value = isNaN(value) ? 1 : value + 1;
+                                            }
+                                        
+                                            function decrementValue(input) {
+                                                var value = parseInt(input.nextElementSibling.value, 10);
+                                                if (value > 0) {
+                                                    input.nextElementSibling.value = value - 1;
+                                                }
+                                            }
+                                        </script>
+                                    </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td>Tablet</td>
+                            <td><strong>&#8377 25</strong></td>
+                            
+                            <td>
+                                <div>
+                                    <div>
+                                        <button onclick="decrementValue(this)" style="width: 25px;">-</button>
+                                        <input type="number" value="0" min="0" style="width: 40px;">
+                                        <button onclick="incrementValue(this)" style="width: 25px;">+</button>
+                                    </div>
+                                        <script>
+                                            function incrementValue(input) {
+                                                var value = parseInt(input.previousElementSibling.value, 10);
+                                                input.previousElementSibling.value = isNaN(value) ? 1 : value + 1;
+                                            }
+                                        
+                                            function decrementValue(input) {
+                                                var value = parseInt(input.nextElementSibling.value, 10);
+                                                if (value > 0) {
+                                                    input.nextElementSibling.value = value - 1;
+                                                }
+                                            }
+                                        </script>
+                                    </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td>Keyboard</td>
+                            <td><strong>&#8377 10</strong></td>
+                            
+                            <td>
+                                <div>
+                                    <div>
+                                        <button onclick="decrementValue(this)" style="width: 25px;">-</button>
+                                        <input type="number" value="0" min="0" style="width: 40px;">
+                                        <button onclick="incrementValue(this)" style="width: 25px;">+</button>
+                                    </div>
+                                        <script>
+                                            function incrementValue(input) {
+                                                var value = parseInt(input.previousElementSibling.value, 10);
+                                                input.previousElementSibling.value = isNaN(value) ? 1 : value + 1;
+                                            }
+                                        
+                                            function decrementValue(input) {
+                                                var value = parseInt(input.nextElementSibling.value, 10);
+                                                if (value > 0) {
+                                                    input.nextElementSibling.value = value - 1;
+                                                }
+                                            }
+                                        </script>
+                                    </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td>Power Bank</td>
+                            <td><strong>&#8377 30</strong></td>
+                            
+                            <td>
+                                <div>
+                                    <div>
+                                        <button onclick="decrementValue(this)" style="width: 25px;">-</button>
+                                        <input type="number" value="0" min="0" style="width: 40px;">
+                                        <button onclick="incrementValue(this)" style="width: 25px;">+</button>
+                                    </div>
+                                        <script>
+                                            function incrementValue(input) {
+                                                var value = parseInt(input.previousElementSibling.value, 10);
+                                                input.previousElementSibling.value = isNaN(value) ? 1 : value + 1;
+                                            }
+                                        
+                                            function decrementValue(input) {
+                                                var value = parseInt(input.nextElementSibling.value, 10);
+                                                if (value > 0) {
+                                                    input.nextElementSibling.value = value - 1;
+                                                }
+                                            }
+                                        </script>
+                                    </div>
+                            </td>
+
+                        </tr>
+                        
+                        <tr>
+                            <td>Scanner</td>
+                            <td><strong>&#8377 25</strong></td>
+                            
+                            <td>
+                                <div>
+                                    <div>
+                                        <button onclick="decrementValue(this)" style="width: 25px;">-</button>
+                                        <input type="number" value="0" min="0" style="width: 40px;">
+                                        <button onclick="incrementValue(this)" style="width: 25px;">+</button>
+                                    </div>
+                                        <script>
+                                            function incrementValue(input) {
+                                                var value = parseInt(input.previousElementSibling.value, 10);
+                                                input.previousElementSibling.value = isNaN(value) ? 1 : value + 1;
+                                            }
+                                        
+                                            function decrementValue(input) {
+                                                var value = parseInt(input.nextElementSibling.value, 10);
+                                                if (value > 0) {
+                                                    input.nextElementSibling.value = value - 1;
+                                                }
+                                            }
+                                        </script>
+                                    </div>
+                            </td>
+
+                        </tr>
+                        
+                    </tbody>
+                </table>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        // Calculate and display the total when the page loads
+                        calculateTotal();
+                    });
+                
+                    function incrementValue(input) {
+                        var value = parseInt(input.previousElementSibling.value, 10);
+                        input.previousElementSibling.value = isNaN(value) ? 1 : value + 1;
+                
+                        // Recalculate the total when quantity changes
+                        calculateTotal();
+                    }
+                
+                    function decrementValue(input) {
+                        var value = parseInt(input.nextElementSibling.value, 10);
+                        if (value > 0) {
+                            input.nextElementSibling.value = value - 1;
+                
+                            // Recalculate the total when quantity changes
+                            calculateTotal();
+                        }
+                    }
+                
+                    function calculateTotal() {
+                        var total = 0;
+                
+                        // Iterate through all rows in the table body
+                        var rows = document.querySelectorAll(".table-body tbody tr");
+                        rows.forEach(function (row) {
+                            var quantity = parseInt(row.cells[3].querySelector("input").value, 10);
+                            var price = parseInt(row.cells[2].innerText.replace(/[^\d]/g, ''), 10); // Extract numeric part from the price
+                
+                            // Update the total for items with quantity > 0
+                            if (quantity > 0) {
+                                total += quantity * price;
+                            }
+                        });
+                
+                        // Display the total amount
+                        return total;
+                    }
+                
+                    function addToCart() {
+                        var selectedItems = [];  // Array to store selected items
+                        var total = calculateTotal();  // Get the total price
+
+                        // Iterate through all rows in the table body
+                        var rows = document.querySelectorAll(".table-body tbody tr");
+                        rows.forEach(function (row) {
+                            var quantity = parseInt(row.cells[3].querySelector("input").value, 10);
+                            var name = row.cells[0].innerText;
+                            var price = parseInt(row.cells[2].innerText.replace(/[^\d]/g, ''), 10); // Extract numeric part from the price
+
+                            // Add selected items to the array
+                            if (quantity > 0) {
+                            selectedItems.push({ name: name, quantity: quantity, price: quantity * price });
+                        }
+                        });
+
+                        // Store selected items and total amount in localStorage
+                        localStorage.setItem("selectedItems", JSON.stringify(selectedItems));
+                        localStorage.setItem("totalAmount", total);
+
+                        // Redirect to payment.html
+                        window.location.href = 'billing.html';
+                    }
+                </script>
+                
+                <div class="button-container">
+                    <button class="cart" onclick="addToCart()">Add To Cart</button>
+                </div>
+
+            </section>
+        </main>
+        
+    <iframe src="footer.html" title="Footer" class="footer"></iframe>
+    
+    </body>
+</html>
