@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenTrack</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"> 
+
+    <style>
+        @keyframes moveUpDown {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif; /* Applying Roboto font */
+            line-height: 1.6; /* Improving readability */
+            background-color: #f7fafc; /* Setting a light background color */
+        }
+
+        .text-gray-900 {
+            color: #2d3748; /* Setting a dark text color */
+        }
+
+        .container {
+            max-width: 1200px; /* Limiting content width */
+            margin: 0 auto; /* Centering content horizontally */
+            padding: 20px; /* Adding space around content */
+        }
+
+        .animated-image {
+            animation: moveUpDown 1.5s infinite alternate;
+            max-width: 100%; /* Ensure image fits container */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        .title-font {
+            font-size: 2.5rem; /* Increasing title font size */
+            font-weight: 700; /* Making title font bold */
+            line-height: 1.2; /* Adjusting line height for better readability */
+        }
+
+        iframe.footer {
+            width: 100%;
+            height: 180px;
+            border: none;
+            margin-top: 20px; /* Added line */
+        }
+
+        .content-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between; /* Align content (text and image) to the start and end of the container */
+            align-items: center; /* Align items vertically center */
+        }
+
+        .image-container {
+            max-width: 50%; /* Limiting the width of the image container */
+        }
+
+        .button-container {
+            margin-top: 20px; /* Adding space between image and buttons */
+            display: flex;
+            flex-direction: row;
+            justify-content: center; /* Center-align buttons horizontally */
+        }
+
+        .button {
+            margin: 0 10px; 
+            padding: 10px 20px; 
+            color: white; 
+            border: none; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            transition: background-color 0.3s; 
+            background-color:#1B5E20; 
+        }
+
+        .button:hover {
+            transform: scale(1.05);
+        }
+      
+    </style>
+</head>
+<body>
+
+    <div style="flex: 1;">
+
+        <iframe src="header.html" title="Header" width="100%" height="100"></iframe>
+        
+        <section class="text-gray-600 body-font">
+            <div class="container mx-auto flex flex-col px-5 items-center justify-center">
+                <div class="content-container">
+                    <div class="text-left lg:w-2/3 w-full">
+                        <h1 class="title-font mb-4 text-4xl text-gray-900">Empowering Responsible Disposal for a <br>Sustainable Tomorrow
+                            <br>
+                            <br class="hidden lg:inline-block"> Navigating Towards a Cleaner Future
+                        </h1>
+                        <div class="button-container">
+                            <a href="register.html">
+                            <button class="button">Register</button></a>
+
+                            <a href="login.html">
+                            <button class="button">Login</button></a>
+                        </div>
+                    </div>
+                    
+                    <div class="image-container">
+                        <img class="animated-image" alt="hero" src="pngwing.com (1).png" width="300">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <iframe src="footer.html" title="Footer" class="footer"></iframe>
+</body>
+</html>
